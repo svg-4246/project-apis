@@ -40,5 +40,6 @@ payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="1d494aa9-cecd-402e-917c-cb9b4f10beed" message="#[payload]"/>
+		<flow-ref doc:name="Flow Reference" doc:id="409c5afb-8ee1-4950-8c70-12d994bf71d7" name="z-exp-apiFlow"/>
 	</flow>
 </mule>

@@ -29,4 +29,17 @@ p('https.host')]]></ee:set-variable>
 		<http:request method="GET" doc:name="Request" doc:id="db4a3955-426c-4f74-a5c5-413ec26fb620" url="#[vars.url ++ vars.path]"/>
 		<logger level="INFO" doc:name="Logger" doc:id="b4c0bcb5-807f-4a92-97a5-c658d32a7641" message='#["expapi successful"]'/>
 	</flow>
+	<flow name="z-exp-apiFlow1" doc:id="2c7c55de-b88a-4de8-8a6d-a382197a8031" >
+		<http:listener doc:name="Listener" doc:id="88378632-dcaa-40bf-97cc-de4af8e1ed0b" config-ref="HTTP_Listener_config" path="/api"/>
+		<ee:transform doc:name="Transform Message" doc:id="8ece9cfa-8274-4787-8ce1-f6e60e7a4ec8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="1d494aa9-cecd-402e-917c-cb9b4f10beed" />
+	</flow>
 </mule>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="235768b5-3067-4f43-ae7b-a71cc40defa1" file="properties\dev.yaml" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="b15e5a08-f467-4649-b8d4-7c88338bdb9f" >
+		<http:listener-connection host="${http.host}" port="${http.port}" />
+	</http:listener-config>
+	<flow name="z-exp-apiFlow" doc:id="a1dd5fc4-248f-4295-9870-1193fb4148e2" >
+		<http:listener doc:name="Listener" doc:id="0a0393a1-d5fe-4367-9a17-d244aee25de0" config-ref="HTTP_Listener_config" path="${http.path}"/>
+		<logger level="INFO" doc:name="Logger" doc:id="b6e53e73-4acd-4a1f-9a59-fe824a7e3beb" message='#["expapi started"]'/>
+		<ee:transform doc:name="Transform Message" doc:id="3a9c52e2-646f-428e-a3b0-b418cb165196" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="path" ><![CDATA[%dw 2.0
+output application/java
+---
+p('https.path')]]></ee:set-variable>
+				<ee:set-variable variableName="url" ><![CDATA[%dw 2.0
+output application/java
+---
+p('https.host')]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<http:request method="GET" doc:name="Request" doc:id="db4a3955-426c-4f74-a5c5-413ec26fb620" url="#[vars.url ++ vars.path]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="b4c0bcb5-807f-4a92-97a5-c658d32a7641" message='#["expapi successful"]'/>
+	</flow>
+	<flow name="z-exp-apiFlow1" doc:id="2c7c55de-b88a-4de8-8a6d-a382197a8031" >
+		<http:listener doc:name="Listener" doc:id="88378632-dcaa-40bf-97cc-de4af8e1ed0b" config-ref="HTTP_Listener_config" path="/apis"/>
+		<ee:transform doc:name="Transform Message" doc:id="8ece9cfa-8274-4787-8ce1-f6e60e7a4ec8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="1d494aa9-cecd-402e-917c-cb9b4f10beed" message="#[payload]"/>
+		<flow-ref doc:name="z-expflow-subflow" doc:id="409c5afb-8ee1-4950-8c70-12d994bf71d7" name="z-exp-apiFlow"/>
+	</flow>
+</mule>

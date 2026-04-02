@@ -1,0 +1,18 @@
+
+[
+  {
+    "employeeId":10,
+    "firstName": "sai",
+    "lastName": "sunil",
+    "age": 30,
+    "gender" : "male",
+    "bloodGroup": "B",
+    "emailId": "saisunil@mail.com",
+    "phoneNumber": "8451784216",
+    "city": "guntur", 
+    "role": "Developer",
+    "department": "IT",
+    "designation":"Junior",
+    "technology": "mulesoft"
+  }
+]
